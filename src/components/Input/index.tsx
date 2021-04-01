@@ -3,13 +3,21 @@ import {
   useRef,
   useState,
   useCallback,
+  ReactNode,
 } from 'react';
 
 import { useField } from '@unform/core';
 
 import { Container } from './styles';
 
-const Input = ({ name, icon: Icon, ...rest }) => {
+interface Props {
+  name: string;
+  icon?: string;
+  children?: ReactNode;
+  placeholder: string;
+}
+
+const Input = ({ name, icon: Icon, placeholder, ...children }: Props) => {
   const inputRef = useRef(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -24,7 +32,7 @@ const Input = ({ name, icon: Icon, ...rest }) => {
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
 
-    setIsFilled(!!inputRef.current?.value);
+    // setIsFilled(!!inputRef.current?.value);
   }, []);
 
   useEffect(() => {
@@ -37,14 +45,15 @@ const Input = ({ name, icon: Icon, ...rest }) => {
 
   return (
     <Container isFilled={isFilled} isFocused={isFocused}>
-      {Icon && <Icon size={20} />}
+      {/* {Icon && <Icon size={20} />} */}
 
       <input
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         defaultValue={defaultValue}
+        placeholder={placeholder}
         ref={inputRef}
-        {...rest}
+        {...children}
       />
     </Container>
   );
